@@ -100,11 +100,10 @@ def saveCalibrationData(CalibFileName, SquareSize, ImageSize, CameraMatrix, Dist
         myfile.write('   cols: 3\n')
         myfile.write('   dt: d\n')
         myfile.write('   data: [ ')
-        for i,RVec in enumerate(RVecs):
-            if i < len(RVecs)-1:
-                myfile.write('       %f, %f, %f,\n' %(RVec[0], RVec[1], RVec[2]))
-            else:
-                myfile.write('       %f, %f, %f,\n' %(RVec[0], RVec[1], RVec[2]))
+        datalist = []
+        for RVec in RVecs:
+            datalist = datalist + ['%f' %RVec[0], '%f' %RVec[1], '%f' %RVec[2]]
+        myfile.write(', '.join(datalist))
         myfile.write('         ]\n')
                 
         myfile.write('# translation vectors of the camera\n')
@@ -113,11 +112,10 @@ def saveCalibrationData(CalibFileName, SquareSize, ImageSize, CameraMatrix, Dist
         myfile.write('   cols: 3\n')
         myfile.write('   dt: d\n')
         myfile.write('   data: [ ')
-        for i,TVec in enumerate(TVecs):
-            if i < len(TVecs)-1:
-                myfile.write('       %f, %f, %f,\n' %(TVec[0], TVec[1], TVec[2]))
-            else:
-                myfile.write('       %f, %f, %f\n' %(TVec[0], TVec[1], TVec[2]))
+        datalist = []
+        for TVec in TVecs:
+            datalist = datalist + ['%f' %TVec[0], '%f' %TVec[1], '%f' %TVec[2]]
+        myfile.write(', '.join(datalist))
         myfile.write('         ]\n')
 
 def main(argv):
@@ -125,7 +123,7 @@ def main(argv):
                     '-W <pattern width> -H <pattern height> -S <square size>' + \
                     '-o <output file>' + \
                  'Example:\n' + \
-                 "$ ./estimateDistortion.py -i /home/chuong/Data/GC03L-temp/IMG_6425.JPG -o /home/chuong/Data/GC03L-temp/IMG_6425/"
+                 "$ ./estimateDistortion.py -i /home/chuong/Data/GC03L-temp/image_list.txt -o /home/chuong/Data/GC03L-temp/IMG_6425/calib_param.yml"
     try:
         opts, args = getopt.getopt(argv,"hi:W:H:S:o:",["ifile=","gwidth=","gheight=","ssize=","ofolder="])
     except getopt.GetoptError:
